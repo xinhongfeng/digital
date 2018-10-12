@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flyfox.digitalcenter.dao.LabelInfoDao">
+	<resultMap id="labelMap" type="com.flyfox.digitalcenter.model.LabelInfo">
+		<id column="id" property="id"></id>
+		<result column="labelId" property="labelId"/>
+		<result column="shortDescription" property="shortDescription"/>
+		<result column="detailDescription" property="detailDescription"/>
+	</resultMap>
+
+	<parameterMap id="label" type="com.flyfox.digitalcenter.model.LabelInfo"/>
+
+	<sql id="Base_Column_List">
+		id,labelId, shortDescription, detailDescription 
+	</sql>
+
+	<insert id="insert" parameterMap="label" useGeneratedKeys="true" keyProperty="id">
+		insert into label_info (labelId, shortDescription, detailDescription)
+		values(#{labelId},#{shortDescription}, #{detailDescription})
+	</insert>
+	
+	<update id="update" parameterMap="label" >
+	
+	update label_info set labelId=#{labelId},shortDescription=#{shortDescription},detailDescription=#{detailDescription} 
+	where id=#{id}
+	
+	</update>
+	
+	<select id="getByLabelId" resultType="java.lang.Integer" resultMap="labelMap">
+	
+	select <include refid="Base_Column_List"></include> from label_info where labelId=#{labelId}
+	
+	</select>
+	
+	 <select id="getByNumber" resultMap="labelMap" parameterType="java.lang.String" >
+	
+	select  l.shortDescription,l.detailDescription  from label_digital n  ,label_info  l where n.labelId=l.labelId  and  number=#{number}
+	 
+	</select>
+
+</mapper>

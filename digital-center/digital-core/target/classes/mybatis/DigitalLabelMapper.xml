@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flyfox.digitalcenter.dao.DigitalLabelDao">
+	<resultMap id="digitalLabelMap" type="com.flyfox.digitalcenter.model.DigitalLabel">
+		<id column="id" property="id"></id>
+		<result column="number" property="number"/>
+		<result column="labelId" property="labelId"/>
+	</resultMap>
+
+	<parameterMap id="label" type="com.flyfox.digitalcenter.model.DigitalLabel"/>
+
+	<sql id="Base_Column_List">
+		id,number, labelId  
+	</sql>
+	
+	<insert id="insert" parameterMap="label" useGeneratedKeys="true" keyProperty="id">
+	 
+	 insert into label_digital(number,labelId) values(#{number},#{labelId})
+	
+	</insert>
+	 
+	 <select id="getGeelyNumber" parameterType="java.util.Map" resultType="java.lang.String">
+	 
+	 select n.number from label_digital n  ,label_info  l where n.labelId=l.labelId 
+	 
+	 and l.shortDescription  in 
+	 <foreach collection="descs" item="item" index="index"  open="(" separator="," close=")">
+	 #{item}
+	 </foreach>
+	 
+	 order by l.shortDescription,n.number
+	 
+	 </select>
+
+</mapper>
